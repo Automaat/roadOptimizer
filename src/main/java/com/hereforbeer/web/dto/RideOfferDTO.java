@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RideOfferDTO {
     private String id;
-    private int sits;
-    private LocationDTO location;
+    private int seats;
+    private LocationDTO start;
+    private LocationDTO end;
+    private String rideDate;
 }
