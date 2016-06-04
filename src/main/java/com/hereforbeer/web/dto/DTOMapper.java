@@ -77,4 +77,28 @@ public class DTOMapper {
                 .passengers(passengersDTOs)
                 .build();
     }
+
+    public static RideOfferDTO parseRideOfferToDTO(RideOffer offer) {
+        return RideOfferDTO.builder()
+                .id(offer.getId())
+                .start(parseFromLocation(offer.getStart()))
+                .end(parseFromLocation(offer.getEnd()))
+                .rideDate(offer.getRideDate().format(formatter))
+                .seats(offer.getSeats())
+                .build();
+    }
+
+    public static LocationDTO parseFromLocation(Point point) {
+        return LocationDTO.fromPoint(point);
+    }
+
+
+    public static UserDTO parseUserToDTO(User user) {
+        return UserDTO.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .nick(user.getNick())
+                .build();
+    }
 }

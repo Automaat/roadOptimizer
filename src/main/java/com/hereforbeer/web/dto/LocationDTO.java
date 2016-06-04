@@ -1,6 +1,9 @@
 package com.hereforbeer.web.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.geo.Point;
 
 @Builder
@@ -21,5 +24,9 @@ public class LocationDTO {
 
     public Point asPoint() {
         return new Point(longitude, latitude);
+    }
+
+    public static LocationDTO fromPoint(Point point) {
+        return new LocationDTO(point.getX(), point.getY());
     }
 }

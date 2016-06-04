@@ -5,15 +5,21 @@ import com.hereforbeer.domain.User;
 import com.hereforbeer.repositories.RideOfferRepository;
 import com.hereforbeer.repositories.UserRepository;
 import com.hereforbeer.web.BadRequestException;
+import com.hereforbeer.web.dto.DTOMapper;
 import com.hereforbeer.web.dto.RideOfferDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static com.hereforbeer.web.ErrorInfo.BAD_LOCATION;
 import static com.hereforbeer.web.dto.DTOMapper.parseRideOfferFromDTO;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class RideOfferService {
+
     private final RideOfferRepository rideOfferRepository;
     private final UserRepository userRepository;
 
@@ -34,5 +40,12 @@ public class RideOfferService {
 
         RideOffer rideOffer = parseRideOfferFromDTO(rideOfferDTO, user.getId());
         rideOfferRepository.save(rideOffer);
+    }
+
+    public List<RideOfferDTO> getActiveOffers() {
+        return rideOfferRepository.findByRideDateAfter(LocalDateTime.now())
+                .stream()
+                .map(DTOMapper::parseRideOfferToDTO)
+                .collect(toList());
     }
 }

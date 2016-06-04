@@ -3,16 +3,17 @@ package com.hereforbeer.services;
 import com.hereforbeer.domain.User;
 import com.hereforbeer.repositories.UserRepository;
 import com.hereforbeer.web.BadRequestException;
+import com.hereforbeer.web.dto.DTOMapper;
 import com.hereforbeer.web.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
-import static com.hereforbeer.web.ErrorInfo.USER_DUPLICATED;
-import static com.hereforbeer.web.ErrorInfo.USER_NOT_FOUND;
-import static com.hereforbeer.web.ErrorInfo.WRONG_PASSWORD;
+import static com.hereforbeer.web.ErrorInfo.*;
 import static com.hereforbeer.web.dto.DTOMapper.parseUserFromDTO;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class UserService {
@@ -44,5 +45,12 @@ public class UserService {
                         throw new BadRequestException(WRONG_PASSWORD);
                     }
                 });
+    }
+
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(DTOMapper::parseUserToDTO)
+                .collect(toList());
     }
 }
