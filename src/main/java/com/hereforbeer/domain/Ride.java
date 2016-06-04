@@ -6,6 +6,7 @@ import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,9 +25,14 @@ public class Ride {
     private LocalDateTime rideTime; //Format: "yyyy/MM/dd HH:mm:ss"
     private List<Passenger> passengers;
     private String ownerId;
+    private int capacity;
+
 
     public static RideBuilder builder() {
         return hiddenBuilder().id(UUID.randomUUID().toString());
     }
 
+    public List<PassengerCandidate> addPassengers(List<PassengerCandidate> matchedPassengers) {
+        return null;
+    }
 }
