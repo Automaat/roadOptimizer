@@ -23,7 +23,7 @@ public class Ride {
     private List<Point> checkpoints;
     private LocalDateTime rideTime; //Format: "yyyy/MM/dd HH:mm:ss"
     private List<Passenger> passengers;
-
+    private String ownerId;
 
     public static RideBuilder builder() {
         return hiddenBuilder().id(UUID.randomUUID().toString());

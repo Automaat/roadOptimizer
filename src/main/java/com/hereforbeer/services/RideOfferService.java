@@ -20,10 +20,10 @@ public class RideOfferService {
     }
 
     public void addRideOffer(RideOfferDTO rideOfferDTO, String headerNick) {
-
         if (rideOfferDTO.getStart() == null || rideOfferDTO.getEnd() == null) {
             throw new BadRequestException(BAD_LOCATION);
         }
+
         RideOffer rideOffer = parseRideOfferFromDTO(rideOfferDTO, headerNick);
         rideOfferRepository.save(rideOffer);
     }

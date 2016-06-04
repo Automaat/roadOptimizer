@@ -1,12 +1,12 @@
 package com.hereforbeer.web.dto;
 
-import com.hereforbeer.domain.PassengerCandidate;
-import com.hereforbeer.domain.RideOffer;
-import com.hereforbeer.domain.User;
+import com.hereforbeer.domain.*;
 import org.springframework.data.geo.Point;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DTOMapper {
 
@@ -48,5 +48,33 @@ public class DTOMapper {
                 .rideTime(LocalDateTime.parse(passengerDTO.getRideTime(), formatter))
                 .build();
 
+    }
+
+    public static LocationDTO pointToDTO(Point point) {
+        return LocationDTO.builder()
+                .latitude(point.getX())
+                .longitude(point.getY())
+                .build();
+    }
+
+    public static PassengerDTO passengertoDTO(Passenger passenger) {
+        return PassengerDTO.builder()
+                .firstName(passenger.getFirstName())
+                .lastName(passenger.getLastName())
+                .address(pointToDTO(passenger.getLocation()))
+                .build();
+    }
+
+    public static RideDTO rideToDto(Ride ride) {
+        List<LocationDTO> checkpointsDTOs = ride.getCheckpoints().stream().map(DTOMapper::pointToDTO).collect(Collectors.toList());
+
+        List<PassengerDTO> passengersDTOs = ride.getPassengers().stream().map(DTOMapper::passengertoDTO).collect(Collectors.toList());
+
+        return RideDTO.builder()
+                .id(ride.getId())
+                .checkpoints(checkpointsDTOs)
+                .departureTime(ride.getRideTime().toString())
+                .passengers(passengersDTOs)
+                .build();
     }
 }
