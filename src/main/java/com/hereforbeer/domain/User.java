@@ -5,14 +5,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
-
+import java.util.UUID;
 
 @Data
 @Builder(builderMethodName = "hiddenUserBuilder")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"id"})
-@Document
+@Document(collection = "users")
 public class User {
 
     @Id
@@ -27,5 +27,7 @@ public class User {
     @NotNull
     private String password;
 
-
+    public static User.UserBuilder builder(){
+        return hiddenUserBuilder().id(UUID.randomUUID().toString());
+    }
 }
