@@ -11,12 +11,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
 @Component
 public class RideMatcher {
+
+    public static final long DELTA_MINUTES = 10L;
 
     private RideOfferRepository rideOfferRepository;
     private PassengerCandidateRepository passengerCandidateRepository;
@@ -32,12 +33,12 @@ public class RideMatcher {
     }
 
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "${road_optimizer.matcher.cron}")
     public void MatchRides() {
-        rideOfferRepository.findAll()
+        rideOfferRepository.findAllByActualIsTrue()
                 .stream().forEach(offer -> {
                     List<PassengerCandidate> matchedPassengers = passengerCandidateRepository
-                            .findByLocationWithin(offer.getCircle())
+                            .findByLocationWithinAndRideTimeBetween(offer.getCircle(), offer.getRideDate().minusMinutes(DELTA_MINUTES), offer.getRideDate().plusMinutes(DELTA_MINUTES))
                             .stream()
                             .limit(offer.getSeats())
                             .collect(toList());
@@ -47,7 +48,16 @@ public class RideMatcher {
 
                     List<PassengerCandidate> addedCandidates = ride.addPassengers(matchedPassengers);
 
+                    if(ride.getCapacity() == 0) {
+                        offer.setActual(false);
+                        rideOfferRepository.save(offer);
+                    }
+
+                    addedCandidates.forEach(candidate -> {
+                        ride.getCheckpoints().add(candidate.getLocation());
+                    });
                     passengerCandidateRepository.delete(addedCandidates);
+                    rideRepository.save(ride);
                 });
     }
 
@@ -56,6 +66,7 @@ public class RideMatcher {
                 .id(offer.getId())
                 .rideTime(offer.getRideDate())
                 .capacity(offer.getSeats())
+                .ownerId(offer.getAuthorId())
                 .build();
     }
 }

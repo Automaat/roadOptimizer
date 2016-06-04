@@ -20,14 +20,15 @@ public class RideOffer {
     @Id
     private String id = UUID.randomUUID().toString();
 
-    private String authorNick;
+    private String authorId;
     private LocalDateTime rideDate; //Format: "yyyy/MM/dd HH:mm:ss"
     private Point start;
     private Point end;
     private int seats;
+    private boolean actual;
 
     public static RideOfferBuilder builder() {
-        return hiddenBuilder().id(UUID.randomUUID().toString());
+        return hiddenBuilder().id(UUID.randomUUID().toString()).actual(true);
     }
 
     public Circle getCircle() {

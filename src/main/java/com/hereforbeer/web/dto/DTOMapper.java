@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class DTOMapper {
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     public static User parseUserFromDTO(UserDTO userDTO) {
         return User.builder()
@@ -21,7 +21,7 @@ public class DTOMapper {
                 .build();
     }
 
-    public static RideOffer parseRideOfferFromDTO(RideOfferDTO rideOfferDTO, String nick) {
+    public static RideOffer parseRideOfferFromDTO(RideOfferDTO rideOfferDTO, String authorId) {
         double[] startLocation = rideOfferDTO.getStart().asArray();
         Point startPoint = new Point(startLocation[0], startLocation[1]);
 
@@ -36,7 +36,7 @@ public class DTOMapper {
                 .end(endPoint)
                 .rideDate(rideDate)
                 .seats(rideOfferDTO.getSeats())
-                .authorNick(nick)
+                .authorId(authorId)
                 .build();
     }
 
