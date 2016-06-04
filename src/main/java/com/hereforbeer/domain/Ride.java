@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +21,7 @@ public class Ride {
     private String id = UUID.randomUUID().toString();
 
     private List<Point> checkpoints;
-    private LocalDate departureTime;
+    private LocalDateTime departureTime; //Format: "yyyy/MM/dd HH:mm:ss"
     private List<Passenger> passengers;
 
 

@@ -4,7 +4,7 @@ import com.hereforbeer.domain.RideOffer;
 import com.hereforbeer.domain.User;
 import org.springframework.data.geo.Point;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DTOMapper {
@@ -25,8 +25,8 @@ public class DTOMapper {
         double [] endLocation = rideOfferDTO.getStart().asArray();
         Point endPoint = new Point(endLocation[0], endLocation[1]);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate rideDate = LocalDate.parse(rideOfferDTO.getRideDate(), formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime rideDate = LocalDateTime.parse(rideOfferDTO.getRideDate(), formatter);
 
         RideOffer rideOffer = RideOffer.builder()
                 .start(startPoint)

@@ -11,7 +11,7 @@ import java.util.List;
 public class RideDTO {
     private String id;
     private List<LocationDTO> checkpoints;
-    private int departureTime;
+    private String departureTime;
     private List<PassengerDTO> passengers;
 
 }

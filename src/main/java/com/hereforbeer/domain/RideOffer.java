@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -20,7 +20,7 @@ public class RideOffer {
     private String id = UUID.randomUUID().toString();
 
     private String authorNick;
-    private LocalDate rideDate;
+    private LocalDateTime rideDate; //Format: "yyyy/MM/dd HH:mm:ss"
     private Point start;
     private Point end;
     private int seats;
