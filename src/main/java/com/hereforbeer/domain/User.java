@@ -22,6 +22,9 @@ public class User {
     private String nick;
 
     @NotNull
+    private String firstname;
+
+    @NotNull
     private String lastname;
 
     @NotNull
