@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
@@ -25,13 +26,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/users", method = POST)
+    @RequestMapping(value = "/users", method = POST, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO){
         userService.createUser(userDTO);
         return new ResponseEntity<Object>(CREATED);
     }
 
-    @RequestMapping(value = "/login", method = POST)
+    @RequestMapping(value = "/login", method = POST, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> login(@RequestBody UserDTO credentials){
         userService.login(credentials.getNick(), credentials.getPassword());
 

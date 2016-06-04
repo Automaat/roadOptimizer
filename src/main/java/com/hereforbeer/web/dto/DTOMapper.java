@@ -6,8 +6,8 @@ public class DTOMapper {
 
     public static User parseUserFromDTO(UserDTO userDTO) {
         return User.builder()
-                .firstname(userDTO.getFirstname())
-                .lastname(userDTO.getLastname())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
                 .nick(userDTO.getNick())
                 .password(userDTO.getPassword())
                 .build();
