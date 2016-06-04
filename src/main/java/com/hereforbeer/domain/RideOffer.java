@@ -2,6 +2,7 @@ package com.hereforbeer.domain;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -29,4 +30,19 @@ public class RideOffer {
         return hiddenBuilder().id(UUID.randomUUID().toString());
     }
 
+    public Circle getCircle() {
+        Point center = new Point(avg(start.getX(), end.getX()), avg(start.getY(), end.getY()));
+        return new Circle(center, rad(start, end));
+    }
+
+    private double avg(double x, double y) {
+        return (x + y) / 2;
+    }
+
+    private double rad(Point point1, Point point2) {
+        double dx = point1.getX() - point2.getX();
+        double dy = point1.getY() - point2.getY();
+
+        return Math.sqrt(dx*dx + dy * dy);
+    }
 }

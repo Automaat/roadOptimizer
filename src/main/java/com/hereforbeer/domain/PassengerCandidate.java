@@ -5,8 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -14,19 +14,25 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"id"})
 @Builder(builderMethodName = "hiddenBuilder")
-@Document(collection = "rides")
-public class Ride {
+@Document(collection = "candidates")
+public class PassengerCandidate {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    private String id;
 
-    private List<Point> checkpoints;
-    private LocalDateTime rideTime; //Format: "yyyy/MM/dd HH:mm:ss"
-    private List<Passenger> passengers;
+    @NotNull
+    private String firstName;
 
+    @NotNull
+    private String lastName;
 
-    public static RideBuilder builder() {
+    @NotNull
+    private Point location;
+
+    @NotNull
+    private LocalDateTime rideTime;
+
+    public static PassengerCandidateBuilder builder() {
         return hiddenBuilder().id(UUID.randomUUID().toString());
     }
-
 }

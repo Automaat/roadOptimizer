@@ -7,7 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PassengerDTO {
-    private String firstname;
-    private String lastname;
-    private LocationDTO point;
+    private String firstName;
+    private String lastName;
+    private LocationDTO address;
+    private String rideTime;
 }

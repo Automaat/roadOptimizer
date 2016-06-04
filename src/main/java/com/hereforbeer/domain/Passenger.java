@@ -11,10 +11,7 @@ import org.springframework.data.geo.Point;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Passenger {
-
-    private String firstname;
-
-    private String lastname;
-
-    private Point point;
+    private String firstName;
+    private String lastName;
+    private Point location;
 }
