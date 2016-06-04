@@ -18,7 +18,7 @@ import java.util.UUID;
 public class PassengerCandidate {
 
     @Id
-    private String id;
+    private String id = UUID.randomUUID().toString();
 
     @NotNull
     private String firstName;
@@ -31,6 +31,14 @@ public class PassengerCandidate {
 
     @NotNull
     private LocalDateTime rideTime;
+
+    public Passenger asPassenger() {
+        return Passenger.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .location(location)
+                .build();
+    }
 
     public static PassengerCandidateBuilder builder() {
         return hiddenBuilder().id(UUID.randomUUID().toString());
