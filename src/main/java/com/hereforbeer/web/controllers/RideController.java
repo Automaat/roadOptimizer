@@ -5,6 +5,7 @@ import com.hereforbeer.web.dto.RideDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +41,11 @@ public class RideController {
     public ResponseEntity<List<RideDTO>> getAllRides() {
         List<RideDTO> ridesDTOs = rideService.getAllActualRides();
         return new ResponseEntity<>(ridesDTOs, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rides/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> getRide(@PathVariable("id") String id) {
+        RideDTO rideDTO = rideService.getRide(id);
+        return new ResponseEntity<>(rideDTO, HttpStatus.OK);
     }
 }

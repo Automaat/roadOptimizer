@@ -12,7 +12,7 @@ public enum ErrorInfo {
     OFFER_NOT_FOUND(4004, "Offer does not exist"),
 
     BAD_LOCATION(4103, "Bad location"),
-
+    RIDE_NOT_FOUND(4104, "Ride not found"),
 
     //Other exceptions
     CONFLICT(4999, "Conflict");

@@ -63,4 +63,9 @@ public class RideService {
         List<Ride> rides = rideRepository.findAllByRideTimeAfter(LocalDateTime.now());
         return rides.stream().map(DTOMapper::parseRideToDTO).collect(Collectors.toList());
     }
+
+    public RideDTO getRide(String id) {
+        Ride ride = rideRepository.findOneById(id).orElseThrow(() -> new BadRequestException(ErrorInfo.RIDE_NOT_FOUND));
+        return DTOMapper.parseRideToDTO(ride);
+    }
 }
