@@ -38,7 +38,7 @@ public class RideMatcher {
         rideOfferRepository.findAllByActualIsTrue()
                 .stream().forEach(offer -> {
                     List<PassengerCandidate> matchedPassengers = passengerCandidateRepository
-                            .findByLocationWithinAndRideTimeBetween(offer.getCircle(), offer.getRideDate().minusMinutes(DELTA_MINUTES), offer.getRideDate().plusMinutes(DELTA_MINUTES))
+                            .findByLocationWithinAndRideTimeBetween(offer.getCircle(), offer.getRideTime().minusMinutes(DELTA_MINUTES), offer.getRideTime().plusMinutes(DELTA_MINUTES))
                             .stream()
                             .limit(offer.getSeats())
                             .collect(toList());
@@ -53,9 +53,7 @@ public class RideMatcher {
                         rideOfferRepository.save(offer);
                     }
 
-                    addedCandidates.forEach(candidate -> {
-                        ride.getCheckpoints().add(candidate.getLocation());
-                    });
+                    addedCandidates.forEach(candidate -> ride.getCheckpoints().add(candidate.getLocation()));
                     passengerCandidateRepository.delete(addedCandidates);
                     rideRepository.save(ride);
                 });
@@ -64,7 +62,7 @@ public class RideMatcher {
     private Ride newRideFromOffer(RideOffer offer) {
         return Ride.builder()
                 .id(offer.getId())
-                .rideTime(offer.getRideDate())
+                .rideTime(offer.getRideTime())
                 .capacity(offer.getSeats())
                 .ownerId(offer.getAuthorId())
                 .build();
