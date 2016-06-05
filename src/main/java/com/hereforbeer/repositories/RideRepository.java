@@ -11,7 +11,10 @@ import java.util.Optional;
 @Repository
 public interface RideRepository extends MongoRepository<Ride, String> {
     List<Ride> findAllByOwnerIdAndRideTimeAfter(String id, LocalDateTime rideTime);
+
     List<Ride> findAllByOwnerId(String id);
+
     List<Ride> findAllByRideTimeAfter(LocalDateTime rideTime);
+
     Optional<Ride> findOneById(String id);
 }

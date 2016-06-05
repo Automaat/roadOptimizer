@@ -14,4 +14,6 @@ public interface RideOfferRepository extends MongoRepository<RideOffer, String> 
     List<RideOffer> findByRideTimeAfter(LocalDateTime date);
 
     Optional<RideOffer> findOneById(String id);
+
+    List<RideOffer> findAllByActualIsFalse();
 }
