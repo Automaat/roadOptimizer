@@ -20,7 +20,7 @@ public class RideOffer {
     @Id
     private String id = UUID.randomUUID().toString();
 
-    private String authorId;
+    private String ownerId;
     private LocalDateTime rideTime; //Format: "yyyy/MM/dd HH:mm:ss"
     private Point start;
     private Point end;

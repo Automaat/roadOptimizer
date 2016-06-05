@@ -24,9 +24,15 @@ public class RideController {
         this.rideService = rideService;
     }
 
-    @RequestMapping(value = "/rides", method = GET, produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/rides", method = GET, params = {"ownerId"}, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RideDTO>> getOwnerRides(@RequestParam("ownerId") String ownerId) {
         List<RideDTO> ridesDTOs = rideService.getOwnerRides(ownerId);
+        return new ResponseEntity<>(ridesDTOs, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rides", method = GET, params = {"passengerId"}, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RideDTO>> getPassengerRides(@RequestParam("passengerId") String passengerId) {
+        List<RideDTO> ridesDTOs = rideService.getPassengerRides(passengerId);
         return new ResponseEntity<>(ridesDTOs, HttpStatus.OK);
     }
 }

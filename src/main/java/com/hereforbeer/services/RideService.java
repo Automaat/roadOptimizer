@@ -1,8 +1,11 @@
 package com.hereforbeer.services;
 
+import com.hereforbeer.domain.Passenger;
+import com.hereforbeer.domain.Ride;
 import com.hereforbeer.repositories.RideRepository;
 import com.hereforbeer.repositories.UserRepository;
 import com.hereforbeer.web.BadRequestException;
+import com.hereforbeer.web.ErrorInfo;
 import com.hereforbeer.web.dto.DTOMapper;
 import com.hereforbeer.web.dto.RideDTO;
 import com.hereforbeer.domain.User;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,4 +41,22 @@ public class RideService {
                 .map(DTOMapper::rideToDto)
                 .collect(Collectors.toList());
     }
+
+    public List<RideDTO> getPassengerRides(String passengerId) {
+        User user = userRepository.findOneById(passengerId).orElseThrow(() -> new BadRequestException(ErrorInfo.USER_NOT_FOUND));
+
+        return rideRepository.findAll().stream()
+                .filter(ride -> containsPassenger(ride, user) && ride.getRideTime().isAfter(LocalDateTime.now())).map(DTOMapper::parseRideToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private boolean containsPassenger(Ride ride, User user) {
+        for (Passenger passenger : ride.getPassengers()) {
+            if (Objects.equals(passenger.getFirstName(), user.getFirstName()) && Objects.equals(passenger.getLastName(), user.getLastName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

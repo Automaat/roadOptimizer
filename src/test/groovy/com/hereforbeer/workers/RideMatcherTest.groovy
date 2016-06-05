@@ -63,7 +63,7 @@ class RideMatcherTest extends Specification {
 
     def offer = RideOffer.builder()
             .rideTime(LocalDateTime.parse("2016/06/05 08:00:00", DTOMapper.formatter))
-            .authorId(userDriver.getId())
+            .ownerId(userDriver.getId())
             .seats(4)
             .start(new Point(0.0, 0.0))
             .end(new Point(10.0, 0.0))

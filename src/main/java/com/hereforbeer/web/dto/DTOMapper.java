@@ -21,7 +21,7 @@ public class DTOMapper {
                 .build();
     }
 
-    public static RideOffer parseRideOfferFromDTO(RideOfferDTO rideOfferDTO, String authorId) {
+    public static RideOffer parseRideOfferFromDTO(RideOfferDTO rideOfferDTO, String ownerId) {
         double[] startLocation = rideOfferDTO.getStart().asArray();
         Point startPoint = new Point(startLocation[0], startLocation[1]);
 
@@ -36,7 +36,7 @@ public class DTOMapper {
                 .end(endPoint)
                 .rideTime(rideTime)
                 .seats(rideOfferDTO.getSeats())
-                .authorId(authorId)
+                .ownerId(ownerId)
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class DTOMapper {
         return PassengerCandidate.builder()
                 .firstName(firstName)
                 .lastName(lastName)
-                .location(passengerDTO.getAddress().asPoint())
+                .location(passengerDTO.getLocation().asPoint())
                 .rideTime(LocalDateTime.parse(passengerDTO.getRideTime(), formatter))
                 .build();
 
@@ -61,7 +61,7 @@ public class DTOMapper {
         return PassengerDTO.builder()
                 .firstName(passenger.getFirstName())
                 .lastName(passenger.getLastName())
-                .address(pointToDTO(passenger.getLocation()))
+                .location(pointToDTO(passenger.getLocation()))
                 .build();
     }
 
@@ -73,7 +73,7 @@ public class DTOMapper {
         return RideDTO.builder()
                 .id(ride.getId())
                 .checkpoints(checkpointsDTOs)
-                .departureTime(ride.getRideTime().toString())
+                .rideTime(ride.getRideTime().toString())
                 .passengers(passengersDTOs)
                 .build();
     }
@@ -83,7 +83,7 @@ public class DTOMapper {
                 .id(offer.getId())
                 .start(parseFromLocation(offer.getStart()))
                 .end(parseFromLocation(offer.getEnd()))
-                .rideDate(offer.getRideDate().format(formatter))
+                .rideTime(offer.getRideTime().format(formatter))
                 .seats(offer.getSeats())
                 .build();
     }
@@ -99,6 +99,25 @@ public class DTOMapper {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .nick(user.getNick())
+                .build();
+    }
+
+    public static RideDTO parseRideToDTO(Ride ride) {
+        return RideDTO.builder()
+                .id(ride.getId())
+                .checkpoints(ride.getCheckpoints().stream().map(DTOMapper::parseFromLocation).collect(Collectors.toList()))
+                .rideTime(ride.getRideTime().format(formatter))
+                .start(LocationDTO.fromPoint(ride.getStart()))
+                .end(LocationDTO.fromPoint(ride.getEnd()))
+                .passengers(ride.getPassengers().stream().map(DTOMapper::parsePassengerToDTO).collect(Collectors.toList()))
+                .build();
+    }
+
+    private static PassengerDTO parsePassengerToDTO(Passenger passenger) {
+        return PassengerDTO.builder()
+                .firstName(passenger.getFirstName())
+                .lastName(passenger.getLastName())
+                .location(LocationDTO.fromPoint(passenger.getLocation()))
                 .build();
     }
 }

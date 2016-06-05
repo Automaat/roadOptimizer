@@ -64,7 +64,9 @@ public class RideMatcher {
                 .id(offer.getId())
                 .rideTime(offer.getRideTime())
                 .capacity(offer.getSeats())
-                .ownerId(offer.getAuthorId())
+                .ownerId(offer.getOwnerId())
+                .start(offer.getStart())
+                .end(offer.getEnd())
                 .build();
     }
 }

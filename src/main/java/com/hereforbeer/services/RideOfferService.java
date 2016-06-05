@@ -43,7 +43,7 @@ public class RideOfferService {
     }
 
     public List<RideOfferDTO> getActiveOffers() {
-        return rideOfferRepository.findByRideDateAfter(LocalDateTime.now())
+        return rideOfferRepository.findByRideTimeAfter(LocalDateTime.now())
                 .stream()
                 .map(DTOMapper::parseRideOfferToDTO)
                 .collect(toList());

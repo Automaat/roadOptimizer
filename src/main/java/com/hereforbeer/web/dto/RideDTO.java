@@ -11,7 +11,9 @@ import java.util.List;
 public class RideDTO {
     private String id;
     private List<LocationDTO> checkpoints;
-    private String departureTime;
+    private String rideTime;
     private List<PassengerDTO> passengers;
+    private LocationDTO start;
+    private LocationDTO end;
 
 }

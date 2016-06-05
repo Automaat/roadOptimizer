@@ -26,6 +26,8 @@ public class Ride {
     private List<Passenger> passengers = new ArrayList<>();
     private String ownerId;
     private int capacity;
+    private Point start;
+    private Point end;
 
 
     public static RideBuilder builder() {
