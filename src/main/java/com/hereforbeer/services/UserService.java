@@ -53,4 +53,12 @@ public class UserService {
                 .map(DTOMapper::parseUserToDTO)
                 .collect(toList());
     }
+
+    public UserDTO getUserById(String id) {
+        Optional<User> userFromDB = userRepository.findOneById(id);
+
+        return userFromDB
+                .map(DTOMapper::parseUserToDTO)
+                .orElseThrow(() -> new BadRequestException(USER_NOT_FOUND));
+    }
 }

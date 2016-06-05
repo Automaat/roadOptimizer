@@ -4,6 +4,7 @@ import com.hereforbeer.services.UserService;
 import com.hereforbeer.web.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,5 +45,11 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAllUsers() {
 
         return new ResponseEntity<>(userService.getAllUsers(), OK);
+    }
+
+    @RequestMapping(value = "/users/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> getUserById(@PathVariable(value = "id") String id){
+
+        return new ResponseEntity<>(userService.getUserById(id), OK);
     }
 }
