@@ -35,7 +35,7 @@ public class RideMatcher {
 
     @Scheduled(cron = "${road_optimizer.matcher.cron}")
     public void MatchRides() {
-        rideOfferRepository.findAllByActualIsTrue()
+        rideOfferRepository.findByActualIsTrue()
                 .stream().forEach(offer -> {
                     List<PassengerCandidate> matchedPassengers = passengerCandidateRepository
                             .findByLocationWithinAndRideTimeBetween(offer.getCircle(), offer.getRideTime().minusMinutes(DELTA_MINUTES), offer.getRideTime().plusMinutes(DELTA_MINUTES))

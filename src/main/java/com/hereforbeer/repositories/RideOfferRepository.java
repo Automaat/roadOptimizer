@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface RideOfferRepository extends MongoRepository<RideOffer, String> {
 
-    List<RideOffer> findAllByActualIsTrue();
+    List<RideOffer> findByActualIsTrue();
 
     List<RideOffer> findByRideTimeAfter(LocalDateTime date);
 
