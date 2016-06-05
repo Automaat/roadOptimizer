@@ -81,7 +81,7 @@ public class DTOMapper {
     public static RideOfferDTO parseRideOfferToDTO(RideOffer offer) {
         return RideOfferDTO.builder()
                 .id(offer.getId())
-                .ownerId(offer.getAuthorId())
+                .ownerId(offer.getOwnerId())
                 .start(parseFromLocation(offer.getStart()))
                 .end(parseFromLocation(offer.getEnd()))
                 .rideTime(offer.getRideTime().format(formatter))
