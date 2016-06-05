@@ -5,10 +5,13 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface RideOfferRepository extends MongoRepository<RideOffer, String> {
 
     List<RideOffer> findAllByActualIsTrue();
 
-    List<RideOffer> findByRideDateAfter(LocalDateTime date);
+    List<RideOffer> findByRideTimeAfter(LocalDateTime date);
+
+    Optional<RideOffer> findOneById(String id);
 }

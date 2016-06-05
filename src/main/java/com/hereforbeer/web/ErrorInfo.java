@@ -6,9 +6,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public enum ErrorInfo {
 
     //BAD REQUEST EXCEPTION
-    USER_DUPLICATED(4001, "User alredy exists"),
+    USER_DUPLICATED(4001, "User already exists"),
     USER_NOT_FOUND(4002, "User does not exist"),
     WRONG_PASSWORD(4003, "Password does not match"),
+    OFFER_NOT_FOUND(4004, "Offer does not exist"),
 
     BAD_LOCATION(4103, "Bad location"),
 

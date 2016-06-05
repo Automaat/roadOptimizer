@@ -4,10 +4,7 @@ import com.hereforbeer.services.RideOfferService;
 import com.hereforbeer.web.dto.RideOfferDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,5 +37,11 @@ public class RideOfferController {
     public ResponseEntity<List<RideOfferDTO>> getActiveRideOffers() {
 
         return new ResponseEntity<>(rideOfferService.getActiveOffers(), OK);
+    }
+
+    @RequestMapping(value = "/offers/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideOfferDTO> getOfferById(@PathVariable(value = "id") String id) {
+
+        return new ResponseEntity<RideOfferDTO>(rideOfferService.getOfferById(id), OK);
     }
 }

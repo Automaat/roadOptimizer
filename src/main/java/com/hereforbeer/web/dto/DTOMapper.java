@@ -83,7 +83,7 @@ public class DTOMapper {
                 .id(offer.getId())
                 .start(parseFromLocation(offer.getStart()))
                 .end(parseFromLocation(offer.getEnd()))
-                .rideDate(offer.getRideDate().format(formatter))
+                .rideTime(offer.getRideTime().format(formatter))
                 .seats(offer.getSeats())
                 .build();
     }

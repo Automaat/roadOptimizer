@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static com.hereforbeer.web.ErrorInfo.BAD_LOCATION;
+import static com.hereforbeer.web.ErrorInfo.OFFER_NOT_FOUND;
 import static com.hereforbeer.web.dto.DTOMapper.parseRideOfferFromDTO;
 import static java.util.stream.Collectors.toList;
 
@@ -43,9 +45,16 @@ public class RideOfferService {
     }
 
     public List<RideOfferDTO> getActiveOffers() {
-        return rideOfferRepository.findByRideDateAfter(LocalDateTime.now())
+        return rideOfferRepository.findByRideTimeAfter(LocalDateTime.now())
                 .stream()
                 .map(DTOMapper::parseRideOfferToDTO)
                 .collect(toList());
+    }
+
+    public RideOfferDTO getOfferById(String id) {
+        Optional<RideOffer> rideOfferDTO = rideOfferRepository.findOneById(id);
+
+        return rideOfferDTO.map(DTOMapper::parseRideOfferToDTO)
+                .orElseThrow(() -> new BadRequestException(OFFER_NOT_FOUND));
     }
 }
