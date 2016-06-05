@@ -11,5 +11,5 @@ public class RideOfferDTO {
     private int seats;
     private LocationDTO start;
     private LocationDTO end;
-    private String rideDate;
+    private String rideTime;
 }

@@ -25,16 +25,16 @@ public class DTOMapper {
         double[] startLocation = rideOfferDTO.getStart().asArray();
         Point startPoint = new Point(startLocation[0], startLocation[1]);
 
-        double[] endLocation = rideOfferDTO.getStart().asArray();
+        double[] endLocation = rideOfferDTO.getEnd().asArray();
         Point endPoint = new Point(endLocation[0], endLocation[1]);
 
 
-        LocalDateTime rideDate = LocalDateTime.parse(rideOfferDTO.getRideDate(), formatter);
+        LocalDateTime rideTime = LocalDateTime.parse(rideOfferDTO.getRideTime(), formatter);
 
         return RideOffer.builder()
                 .start(startPoint)
                 .end(endPoint)
-                .rideDate(rideDate)
+                .rideTime(rideTime)
                 .seats(rideOfferDTO.getSeats())
                 .authorId(authorId)
                 .build();
