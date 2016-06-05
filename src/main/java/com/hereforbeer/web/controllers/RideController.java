@@ -35,4 +35,10 @@ public class RideController {
         List<RideDTO> ridesDTOs = rideService.getPassengerRides(passengerId);
         return new ResponseEntity<>(ridesDTOs, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/rides", method = GET, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RideDTO>> getAllRides() {
+        List<RideDTO> ridesDTOs = rideService.getAllActualRides();
+        return new ResponseEntity<>(ridesDTOs, HttpStatus.OK);
+    }
 }

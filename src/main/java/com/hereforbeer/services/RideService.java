@@ -59,4 +59,8 @@ public class RideService {
         return false;
     }
 
+    public List<RideDTO> getAllActualRides() {
+        List<Ride> rides = rideRepository.findAllByRideTimeAfter(LocalDateTime.now());
+        return rides.stream().map(DTOMapper::parseRideToDTO).collect(Collectors.toList());
+    }
 }
