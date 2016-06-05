@@ -5,10 +5,7 @@ import com.hereforbeer.web.dto.RideDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,15 +22,15 @@ public class RideController {
         this.rideService = rideService;
     }
 
-    @RequestMapping(value = "/rides", method = GET, params = {"ownerId"}, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RideDTO>> getOwnerRides(@RequestParam("ownerId") String ownerId) {
-        List<RideDTO> ridesDTOs = rideService.getOwnerRides(ownerId);
+    @RequestMapping(value = "/rides/owned", method = GET, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RideDTO>> getOwnerRides(@RequestHeader("X-AUTH-TOKEN") String nick) {
+        List<RideDTO> ridesDTOs = rideService.getOwnerRides(nick);
         return new ResponseEntity<>(ridesDTOs, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/rides", method = GET, params = {"passengerId"}, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RideDTO>> getPassengerRides(@RequestParam("passengerId") String passengerId) {
-        List<RideDTO> ridesDTOs = rideService.getPassengerRides(passengerId);
+    @RequestMapping(value = "/rides/participates", method = GET, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RideDTO>> getPassengerRides(@RequestHeader("X-AUTH-TOKEN") String nick) {
+        List<RideDTO> ridesDTOs = rideService.getPassengerRides(nick);
         return new ResponseEntity<>(ridesDTOs, HttpStatus.OK);
     }
 

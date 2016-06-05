@@ -31,19 +31,19 @@ public class RideService {
         this.userRepository = userRepository;
     }
 
-    public List<RideDTO> getOwnerRides(String ownerId) {
-        Optional<User> user = userRepository.findOneById(ownerId);
+    public List<RideDTO> getOwnerRides(String nick) {
+        Optional<User> user = userRepository.findOneByNick(nick);
         user.orElseThrow(() -> new BadRequestException(USER_NOT_FOUND));
 
         return rideRepository
-                .findAllByOwnerIdAndRideTimeAfter(ownerId, LocalDateTime.now())
+                .findAllByOwnerIdAndRideTimeAfter(user.get().getId(), LocalDateTime.now())
                 .stream()
                 .map(DTOMapper::rideToDto)
                 .collect(Collectors.toList());
     }
 
-    public List<RideDTO> getPassengerRides(String passengerId) {
-        User user = userRepository.findOneById(passengerId).orElseThrow(() -> new BadRequestException(ErrorInfo.USER_NOT_FOUND));
+    public List<RideDTO> getPassengerRides(String nick) {
+        User user = userRepository.findOneByNick(nick).orElseThrow(() -> new BadRequestException(ErrorInfo.USER_NOT_FOUND));
 
         return rideRepository.findAll().stream()
                 .filter(ride -> containsPassenger(ride, user) && ride.getRideTime().isAfter(LocalDateTime.now())).map(DTOMapper::parseRideToDTO)
