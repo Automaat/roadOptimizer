@@ -1,12 +1,14 @@
 package com.hereforbeer.services;
 
 import com.hereforbeer.domain.Ride;
+import com.hereforbeer.domain.RideOffer;
 import com.hereforbeer.repositories.RideOfferRepository;
 import com.hereforbeer.repositories.RideRepository;
 import com.hereforbeer.services.statistics.TopUserCount;
 import com.hereforbeer.web.dto.statistics.StatisticsDTOMapper;
 import com.hereforbeer.web.dto.statistics.SuccessComparisionDTO;
 import com.hereforbeer.web.dto.statistics.TopUserDTO;
+import com.hereforbeer.web.dto.statistics.TotalDistanceInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -69,5 +71,23 @@ public class StatisticsService {
                 .limit(10)
                 .map(StatisticsDTOMapper::parseTopUserToDTO)
                 .collect(toList());
+    }
+
+    public TotalDistanceInfo getTotalDistance(){
+
+        long total = rideOfferRepository.findAll()
+                .stream()
+                .mapToLong((RideOffer::getDistance))
+                .sum();
+
+        long fuel = (total/100) * 7;
+
+        double price = fuel * 4.5;
+
+        double saved = price * 3;
+
+        long savedFuel = fuel * 3;
+
+        return new TotalDistanceInfo(total, fuel, price, saved, savedFuel);
     }
 }

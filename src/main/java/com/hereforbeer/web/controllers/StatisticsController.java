@@ -3,6 +3,7 @@ package com.hereforbeer.web.controllers;
 import com.hereforbeer.services.StatisticsService;
 import com.hereforbeer.web.dto.statistics.SuccessComparisionDTO;
 import com.hereforbeer.web.dto.statistics.TopUserDTO;
+import com.hereforbeer.web.dto.statistics.TotalDistanceInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,5 +36,11 @@ public class StatisticsController {
     public ResponseEntity<List<TopUserDTO>> getTopUsers() {
 
         return new ResponseEntity<>(statisticsService.getTopUser(), OK);
+    }
+
+    @RequestMapping(value = "/distance_stats", method = GET, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<TotalDistanceInfo> getTotalKilometers(){
+
+        return new ResponseEntity<>(statisticsService.getTotalDistance(), OK);
     }
 }
