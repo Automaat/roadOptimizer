@@ -4,11 +4,9 @@ import com.hereforbeer.domain.Ride;
 import com.hereforbeer.domain.RideOffer;
 import com.hereforbeer.repositories.RideOfferRepository;
 import com.hereforbeer.repositories.RideRepository;
+import com.hereforbeer.repositories.UserRepository;
 import com.hereforbeer.services.statistics.TopUserCount;
-import com.hereforbeer.web.dto.statistics.StatisticsDTOMapper;
-import com.hereforbeer.web.dto.statistics.SuccessComparisionDTO;
-import com.hereforbeer.web.dto.statistics.TopUserDTO;
-import com.hereforbeer.web.dto.statistics.TotalDistanceInfo;
+import com.hereforbeer.web.dto.statistics.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -17,6 +15,8 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,14 +28,14 @@ public class StatisticsService {
 
     private RideRepository rideRepository;
     private RideOfferRepository rideOfferRepository;
+    private UserRepository userRepository;
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public StatisticsService(RideRepository rideRepository,
-                             RideOfferRepository rideOfferRepository,
-                             MongoTemplate mongoTemplate) {
+    public StatisticsService(RideRepository rideRepository, RideOfferRepository rideOfferRepository, UserRepository userRepository, MongoTemplate mongoTemplate) {
         this.rideRepository = rideRepository;
         this.rideOfferRepository = rideOfferRepository;
+        this.userRepository = userRepository;
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -73,14 +73,14 @@ public class StatisticsService {
                 .collect(toList());
     }
 
-    public TotalDistanceInfo getTotalDistance(){
+    public TotalDistanceInfo getTotalDistance() {
 
         long total = rideOfferRepository.findAll()
                 .stream()
                 .mapToLong((RideOffer::getDistance))
                 .sum();
 
-        long fuel = (total/100) * 7;
+        long fuel = (total / 100) * 7;
 
         double price = fuel * 4.5;
 
@@ -89,5 +89,38 @@ public class StatisticsService {
         long savedFuel = fuel * 3;
 
         return new TotalDistanceInfo(total, fuel, price, saved, savedFuel);
+    }
+
+    public FreebieStatisticsDTO getFreebieStatistics() {
+
+        long userCount = userRepository.count();
+
+        Aggregation aggregation = newAggregation(
+                match(Criteria.where("rideTime").lt(LocalDateTime.now())),
+                group("ownerId").count().as("total"),
+                project("total").and("ownerId").previousOperation(),
+                sort(Sort.Direction.DESC, "total")
+        );
+
+        AggregationResults<TopUserCount> groupResults = mongoTemplate.aggregate(aggregation,
+                Ride.class,
+                TopUserCount.class);
+
+        long payingUsers = groupResults.getMappedResults().size();
+
+        double payingUsersPercentage = payingUsers / (double) userCount;
+        double freebieUsersPercentage = (userCount - payingUsers) / (double) userCount;
+
+
+        return new FreebieStatisticsDTO(round(freebieUsersPercentage, 2), round(payingUsersPercentage, 2));
+    }
+
+
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

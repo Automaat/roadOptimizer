@@ -1,6 +1,7 @@
 package com.hereforbeer.web.controllers;
 
 import com.hereforbeer.services.StatisticsService;
+import com.hereforbeer.web.dto.statistics.FreebieStatisticsDTO;
 import com.hereforbeer.web.dto.statistics.SuccessComparisionDTO;
 import com.hereforbeer.web.dto.statistics.TopUserDTO;
 import com.hereforbeer.web.dto.statistics.TotalDistanceInfo;
@@ -39,8 +40,14 @@ public class StatisticsController {
     }
 
     @RequestMapping(value = "/distance_stats", method = GET, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<TotalDistanceInfo> getTotalKilometers(){
+    public ResponseEntity<TotalDistanceInfo> getDistanceStatistics(){
 
         return new ResponseEntity<>(statisticsService.getTotalDistance(), OK);
+    }
+
+    @RequestMapping(value = "/freebie_statistics", method = GET, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<FreebieStatisticsDTO> getFreebieStatistics(){
+
+        return new ResponseEntity<>(statisticsService.getFreebieStatistics(), OK);
     }
 }
