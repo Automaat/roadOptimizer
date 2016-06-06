@@ -38,24 +38,28 @@ public class RideMatcher {
         rideOfferRepository.findByActualIsTrue()
                 .stream().forEach(offer -> {
                     List<PassengerCandidate> matchedPassengers = passengerCandidateRepository
-                            .findByLocationWithinAndRideTimeBetween(offer.getCircle(), offer.getRideTime().minusMinutes(DELTA_MINUTES), offer.getRideTime().plusMinutes(DELTA_MINUTES))
+                            .findByLocationWithinAndRideTimeBetween(offer.getCircle(),
+                                    offer.getRideTime().minusMinutes(DELTA_MINUTES),
+                                    offer.getRideTime().plusMinutes(DELTA_MINUTES))
                             .stream()
                             .limit(offer.getSeats())
                             .collect(toList());
 
-                    Ride ride = rideRepository.findOneById(offer.getId())
-                            .orElseGet(() -> newRideFromOffer(offer));
+                    if (!matchedPassengers.isEmpty()) {
+                        Ride ride = rideRepository.findOneById(offer.getId())
+                                .orElseGet(() -> newRideFromOffer(offer));
 
-                    List<PassengerCandidate> addedCandidates = ride.addPassengers(matchedPassengers);
+                        List<PassengerCandidate> addedCandidates = ride.addPassengers(matchedPassengers);
 
-                    if(ride.getCapacity() == 0) {
-                        offer.setActual(false);
-                        rideOfferRepository.save(offer);
+                        if (ride.getCapacity() == 0) {
+                            offer.setActual(false);
+                            rideOfferRepository.save(offer);
+                        }
+
+                        addedCandidates.forEach(candidate -> ride.getCheckpoints().add(candidate.getLocation()));
+                        passengerCandidateRepository.delete(addedCandidates);
+                        rideRepository.save(ride);
                     }
-
-                    addedCandidates.forEach(candidate -> ride.getCheckpoints().add(candidate.getLocation()));
-                    passengerCandidateRepository.delete(addedCandidates);
-                    rideRepository.save(ride);
                 });
     }
 

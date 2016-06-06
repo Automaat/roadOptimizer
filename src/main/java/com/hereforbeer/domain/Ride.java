@@ -21,9 +21,9 @@ public class Ride {
     @Id
     private String id = UUID.randomUUID().toString();
 
-    private List<Point> checkpoints = new ArrayList<>();
+    private List<Point> checkpoints;
     private LocalDateTime rideTime; //Format: "yyyy/MM/dd HH:mm:ss"
-    private List<Passenger> passengers = new ArrayList<>();
+    private List<Passenger> passengers;
     private String ownerId;
     private int capacity;
     private Point start;
@@ -36,7 +36,7 @@ public class Ride {
 
     public List<PassengerCandidate> addPassengers(List<PassengerCandidate> matchedCandidates) {
         List<PassengerCandidate> addedPassengers = new ArrayList<>();
-        matchedCandidates.stream().filter(candidate -> capacity > 0).forEach(candidate -> {
+        matchedCandidates.stream().limit(capacity).forEach(candidate -> {
             passengers.add(candidate.asPassenger());
             addedPassengers.add(candidate);
             capacity--;
