@@ -13,7 +13,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/api")
 public class PassengerCandidateController {
 
-    private PassengerCandidateService passengerCandidateService;
+    private final PassengerCandidateService passengerCandidateService;
 
     @Autowired
     public PassengerCandidateController(PassengerCandidateService passengerCandidateService) {

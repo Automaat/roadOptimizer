@@ -18,10 +18,11 @@ import static java.util.stream.Collectors.toList;
 public class RideMatcher {
 
     public static final long DELTA_MINUTES = 10L;
+    public static final String CRON_PROPERTY = "${road_optimizer.matcher.cron}";
 
-    private RideOfferRepository rideOfferRepository;
-    private PassengerCandidateRepository passengerCandidateRepository;
-    private RideRepository rideRepository;
+    private final RideOfferRepository rideOfferRepository;
+    private final PassengerCandidateRepository passengerCandidateRepository;
+    private final RideRepository rideRepository;
 
     @Autowired
     public RideMatcher(RideOfferRepository rideOfferRepository,
@@ -33,7 +34,7 @@ public class RideMatcher {
     }
 
 
-    @Scheduled(cron = "${road_optimizer.matcher.cron}")
+    @Scheduled(cron = CRON_PROPERTY)
     public void MatchRides() {
         rideOfferRepository.findByActualIsTrue()
                 .stream().forEach(offer -> {

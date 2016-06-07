@@ -20,7 +20,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RequestMapping("api/statistics")
 public class StatisticsController {
 
-    private StatisticsService statisticsService;
+    private final StatisticsService statisticsService;
 
     @Autowired
     public StatisticsController(StatisticsService statisticsService) {

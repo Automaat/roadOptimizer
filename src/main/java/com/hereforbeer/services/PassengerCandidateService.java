@@ -14,8 +14,8 @@ import java.util.Optional;
 @Service
 public class PassengerCandidateService {
 
-    private PassengerCandidateRepository candidateRepository;
-    private UserRepository userRepository;
+    private final PassengerCandidateRepository candidateRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public PassengerCandidateService(PassengerCandidateRepository candidateRepository, UserRepository userRepository) {

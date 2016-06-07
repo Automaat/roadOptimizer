@@ -21,7 +21,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/api")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {

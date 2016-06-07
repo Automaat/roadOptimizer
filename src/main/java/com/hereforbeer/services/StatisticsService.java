@@ -26,10 +26,10 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 @Service
 public class StatisticsService {
 
-    private RideRepository rideRepository;
-    private RideOfferRepository rideOfferRepository;
-    private UserRepository userRepository;
-    private MongoTemplate mongoTemplate;
+    private final RideRepository rideRepository;
+    private final RideOfferRepository rideOfferRepository;
+    private final UserRepository userRepository;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
     public StatisticsService(RideRepository rideRepository, RideOfferRepository rideOfferRepository, UserRepository userRepository, MongoTemplate mongoTemplate) {
